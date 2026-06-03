@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:ukr_solutions_website/core/responsive.dart';
+import 'package:ukr_solutions_website/data/app_data.dart';
+import 'package:ukr_solutions_website/widgets/app_card.dart';
 
-import '../widgets/app_card.dart';
 import '../widgets/footer.dart';
 import '../widgets/navbar.dart' as nav;
 
@@ -23,69 +25,10 @@ class AppsPage extends StatelessWidget {
   }
 
   Widget _buildContent(BuildContext context) {
-    final List<Map<String, dynamic>> apps = [
-      {
-        'name': 'DocFlow',
-        'description':
-            'PDF tools, merge, split, compress and document management.',
-        'icon': Icons.description,
-        'url':
-            'https://play.google.com/store/apps/details?id=com.uksolutions.docflow',
-        'primary': const Color(0xFF3B82F6),
-        'secondary': const Color(0xFF10B981),
-      },
-      {
-        'name': 'DocSnap',
-        'description': 'Document scanning and PDF generation.',
-        'icon': Icons.document_scanner,
-        'url':
-            'https://play.google.com/store/apps/details?id=com.uksolutions.docsnap',
-        'primary': const Color(0xFF10B981),
-        'secondary': const Color(0xFF06B6D4),
-      },
-      {
-        'name': 'BuildCalc',
-        'description': 'Construction and engineering calculations.',
-        'icon': Icons.calculate,
-        'url':
-            'https://play.google.com/store/apps/details?id=com.uksolutions.buildcalc',
-        'primary': const Color(0xFFF59E0B),
-        'secondary': const Color(0xFFD97706),
-      },
-      {
-        'name': 'FemGlow',
-        'description': 'Period and cycle tracking application.',
-        'icon': Icons.favorite,
-        'url':
-            'https://play.google.com/store/apps/details?id=com.uksolutions.femglow',
-        'primary': const Color(0xFFEC4899),
-        'secondary': const Color(0xFFDB2777),
-      },
-      {
-        'name': 'Memo Keeper',
-        'description': 'Notes and productivity application.',
-        'icon': Icons.note_alt,
-        'url':
-            'https://play.google.com/store/apps/details?id=com.uksolutions.memokeeper',
-        'primary': const Color(0xFF6366F1),
-        'secondary': const Color(0xFF8B5CF6),
-      },
-      {
-        'name': 'Learn Flutter & Dart',
-        'description': 'Educational Flutter learning application.',
-        'icon': Icons.school,
-        'url':
-            'https://play.google.com/store/apps/details?id=com.uksolutions.learnflutter',
-        'primary': const Color(0xFF06B6D4),
-        'secondary': const Color(0xFF3B82F6),
-      },
-    ];
-
     return LayoutBuilder(
       builder: (context, constraints) {
-        final isMobile = constraints.maxWidth < 768;
-        final isTablet =
-            constraints.maxWidth >= 768 && constraints.maxWidth < 1024;
+        final isMobile = Responsive.isMobile(context);
+        final isTablet = Responsive.isTablet(context);
 
         return Container(
           width: double.infinity,
@@ -122,16 +65,16 @@ class AppsPage extends StatelessWidget {
                 spacing: 24,
                 runSpacing: 24,
                 alignment: WrapAlignment.center,
-                children: apps.map((app) {
+                children: AppData.apps.map((app) {
                   return SizedBox(
                     width: isMobile ? double.infinity : (isTablet ? 320 : 360),
                     child: AppCardWidget(
-                      appName: app['name'],
-                      description: app['description'],
-                      icon: app['icon'],
-                      playStoreUrl: app['url'],
-                      primaryColor: app['primary'],
-                      secondaryColor: app['secondary'],
+                      appName: app.name,
+                      description: app.description,
+                      icon: app.icon,
+                      playStoreUrl: app.playStoreUrl,
+                      primaryColor: app.primaryColor,
+                      secondaryColor: app.secondaryColor,
                     ),
                   );
                 }).toList(),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ukr_solutions_website/core/responsive.dart';
 
 class AboutSection extends StatelessWidget {
   const AboutSection({super.key});
@@ -7,10 +8,8 @@ class AboutSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final isMobile = constraints.maxWidth < 768;
-        final isTablet =
-            constraints.maxWidth >= 768 && constraints.maxWidth < 1024;
-
+        final isMobile = Responsive.isMobile(context);
+        final isTablet = Responsive.isTablet(context);
         return Container(
           width: double.infinity,
           padding: EdgeInsets.symmetric(

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ukr_solutions_website/core/responsive.dart';
+import 'package:ukr_solutions_website/core/routes.dart';
 
 class HeroSection extends StatefulWidget {
   const HeroSection({super.key});
@@ -47,10 +49,8 @@ class _HeroSectionState extends State<HeroSection>
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final isMobile = constraints.maxWidth < 768;
-        final isTablet =
-            constraints.maxWidth >= 768 && constraints.maxWidth < 1024;
-
+        final isMobile = Responsive.isMobile(context);
+        final isTablet = Responsive.isTablet(context);
         return Container(
           width: double.infinity,
           constraints: BoxConstraints(minHeight: isMobile ? 500 : 560),
@@ -198,7 +198,7 @@ class _HeroSectionState extends State<HeroSection>
                                 SizedBox(
                                   width: double.infinity,
                                   child: ElevatedButton(
-                                    onPressed: () => context.go('/apps'),
+                                    onPressed: () => context.go(Routes.apps),
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: const Color(0xFF3B82F6),
                                       foregroundColor: Colors.white,
@@ -221,7 +221,7 @@ class _HeroSectionState extends State<HeroSection>
                                 SizedBox(
                                   width: double.infinity,
                                   child: OutlinedButton(
-                                    onPressed: () => context.go('/contact'),
+                                    onPressed: () => context.go(Routes.contact),
                                     style: OutlinedButton.styleFrom(
                                       foregroundColor: Colors.white,
                                       padding: const EdgeInsets.symmetric(
@@ -246,7 +246,7 @@ class _HeroSectionState extends State<HeroSection>
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 ElevatedButton(
-                                  onPressed: () => context.go('/apps'),
+                                  onPressed: () => context.go(Routes.apps),
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: const Color(0xFF3B82F6),
                                     foregroundColor: Colors.white,
@@ -265,7 +265,7 @@ class _HeroSectionState extends State<HeroSection>
                                 ),
                                 const SizedBox(width: 24),
                                 OutlinedButton(
-                                  onPressed: () => context.go('/contact'),
+                                  onPressed: () => context.go(Routes.contact),
                                   style: OutlinedButton.styleFrom(
                                     foregroundColor: Colors.white,
                                     padding: const EdgeInsets.symmetric(

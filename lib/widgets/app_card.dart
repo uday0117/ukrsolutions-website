@@ -82,10 +82,7 @@ class _AppCardWidgetState extends State<AppCardWidget> {
                   gradient: LinearGradient(
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
-                    colors: [
-                      widget.primaryColor,
-                      widget.secondaryColor,
-                    ],
+                    colors: [widget.primaryColor, widget.secondaryColor],
                   ),
                   borderRadius: BorderRadius.circular(20),
                   boxShadow: [
@@ -96,14 +93,10 @@ class _AppCardWidgetState extends State<AppCardWidget> {
                     ),
                   ],
                 ),
-                child: Icon(
-                  widget.icon,
-                  size: 40,
-                  color: Colors.white,
-                ),
+                child: Icon(widget.icon, size: 40, color: Colors.white),
               ),
               const SizedBox(height: 24),
-              
+
               // App Name
               Text(
                 widget.appName,
@@ -114,7 +107,7 @@ class _AppCardWidgetState extends State<AppCardWidget> {
                 ),
               ),
               const SizedBox(height: 12),
-              
+
               // Description
               Text(
                 widget.description,
@@ -125,7 +118,7 @@ class _AppCardWidgetState extends State<AppCardWidget> {
                 ),
               ),
               const SizedBox(height: 24),
-              
+
               // Play Store Button
               if (widget.playStoreUrl != null)
                 SizedBox(
@@ -146,10 +139,7 @@ class _AppCardWidgetState extends State<AppCardWidget> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(
-                          Icons.shop,
-                          size: 20,
-                        ),
+                        Icon(Icons.shop, size: 20),
                         const SizedBox(width: 8),
                         const Text('View on Play Store'),
                       ],
@@ -170,11 +160,7 @@ class _AppCardWidgetState extends State<AppCardWidget> {
                   child: const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(
-                        Icons.schedule,
-                        size: 20,
-                        color: Color(0xFF94A3B8),
-                      ),
+                      Icon(Icons.schedule, size: 20, color: Color(0xFF94A3B8)),
                       SizedBox(width: 8),
                       Text(
                         'Coming Soon',

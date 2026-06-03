@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ukr_solutions_website/core/responsive.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../widgets/footer.dart';
@@ -127,10 +128,8 @@ class _ContactPageState extends State<ContactPage> {
   Widget _buildContent(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final isMobile = constraints.maxWidth < 768;
-        final isTablet =
-            constraints.maxWidth >= 768 && constraints.maxWidth < 1024;
-
+        final isMobile = Responsive.isMobile(context);
+        final isTablet = Responsive.isTablet(context);
         return Container(
           width: double.infinity,
           padding: EdgeInsets.symmetric(

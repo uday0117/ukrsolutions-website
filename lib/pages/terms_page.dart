@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ukr_solutions_website/core/responsive.dart';
+import 'package:ukr_solutions_website/data/site_data.dart';
 
 import '../widgets/footer.dart';
 import '../widgets/navbar.dart' as nav;
@@ -24,10 +26,8 @@ class TermsPage extends StatelessWidget {
   Widget _buildContent(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final isMobile = constraints.maxWidth < 768;
-        final isTablet =
-            constraints.maxWidth >= 768 && constraints.maxWidth < 1024;
-
+        final isMobile = Responsive.isMobile(context);
+        final isTablet = Responsive.isTablet(context);
         return Container(
           width: double.infinity,
           constraints: const BoxConstraints(maxWidth: 900),
@@ -77,7 +77,7 @@ class TermsPage extends StatelessWidget {
 
               _buildSection(
                 'Intellectual Property',
-                'The apps and their original content, features, and functionality are owned by UKR Solutions and are protected by international copyright, trademark, patent, trade secret, and other intellectual property laws.',
+                'The apps and their original content, features, and functionality are owned by ${SiteData.companyName} and are protected by international copyright, trademark, patent, trade secret, and other intellectual property laws.',
               ),
 
               _buildSection(
@@ -102,7 +102,7 @@ class TermsPage extends StatelessWidget {
 
               _buildSection(
                 'Limitation of Liability',
-                'In no event shall UKR Solutions, nor its directors, employees, partners, agents, suppliers, or affiliates, be liable for any indirect, incidental, special, consequential, or punitive damages arising out of your use of our apps.',
+                'In no event shall ${SiteData.companyName}, nor its directors, employees, partners, agents, suppliers, or affiliates, be liable for any indirect, incidental, special, consequential, or punitive damages arising out of your use of our apps.',
               ),
 
               _buildSection(
@@ -118,8 +118,8 @@ class TermsPage extends StatelessWidget {
               _buildSection(
                 'Contact Us',
                 'If you have any questions about these Terms and Conditions, please contact us at:\n\n'
-                    'Email: apps.uksolutions@gmail.com\n'
-                    'Website: ukrsolutions.in',
+                    'Email: ${SiteData.email}\n'
+                    'Website: ${SiteData.website}',
               ),
             ],
           ),

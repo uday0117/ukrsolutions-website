@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ukr_solutions_website/core/routes.dart';
 
 import '../pages/apps_page.dart';
 import '../pages/contact_page.dart';
@@ -8,10 +9,10 @@ import '../pages/privacy_page.dart';
 import '../pages/terms_page.dart';
 
 final GoRouter router = GoRouter(
-  initialLocation: '/',
+  initialLocation: Routes.home,
   routes: [
     GoRoute(
-      path: '/',
+      path: Routes.home,
       name: 'home',
       pageBuilder: (context, state) => CustomTransitionPage(
         key: state.pageKey,
@@ -22,7 +23,7 @@ final GoRouter router = GoRouter(
       ),
     ),
     GoRoute(
-      path: '/apps',
+      path: Routes.apps,
       name: 'apps',
       pageBuilder: (context, state) => CustomTransitionPage(
         key: state.pageKey,
@@ -33,7 +34,7 @@ final GoRouter router = GoRouter(
       ),
     ),
     GoRoute(
-      path: '/privacy',
+      path: Routes.privacy,
       name: 'privacy',
       pageBuilder: (context, state) => CustomTransitionPage(
         key: state.pageKey,
@@ -44,7 +45,7 @@ final GoRouter router = GoRouter(
       ),
     ),
     GoRoute(
-      path: '/terms',
+      path: Routes.terms,
       name: 'terms',
       pageBuilder: (context, state) => CustomTransitionPage(
         key: state.pageKey,
@@ -55,7 +56,7 @@ final GoRouter router = GoRouter(
       ),
     ),
     GoRoute(
-      path: '/contact',
+      path: Routes.contact,
       name: 'contact',
       pageBuilder: (context, state) => CustomTransitionPage(
         key: state.pageKey,

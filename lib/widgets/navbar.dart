@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ukr_solutions_website/core/responsive.dart';
+import 'package:ukr_solutions_website/core/routes.dart';
+import 'package:ukr_solutions_website/data/site_data.dart';
 
 class NavigationBar extends StatelessWidget {
   const NavigationBar({super.key});
@@ -18,14 +21,14 @@ class NavigationBar extends StatelessWidget {
       ),
       child: LayoutBuilder(
         builder: (context, constraints) {
-          final isMobile = constraints.maxWidth < 768;
-
+          final isMobile = Responsive.isMobile(context);
+          final isTablet = Responsive.isTablet(context);
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               // Logo
               InkWell(
-                onTap: () => context.go('/'),
+                onTap: () => context.go(Routes.home),
                 child: Row(
                   children: [
                     Container(
@@ -58,7 +61,7 @@ class NavigationBar extends StatelessWidget {
                     if (!isMobile) ...[
                       const SizedBox(width: 12),
                       const Text(
-                        'UKR Solutions',
+                        SiteData.companyName,
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ukr_solutions_website/core/responsive.dart';
+import 'package:ukr_solutions_website/data/site_data.dart';
 
 class FooterWidget extends StatelessWidget {
   const FooterWidget({super.key});
@@ -16,8 +18,8 @@ class FooterWidget extends StatelessWidget {
       ),
       child: LayoutBuilder(
         builder: (context, constraints) {
-          final isMobile = constraints.maxWidth < 768;
-
+          final isMobile = Responsive.isMobile(context);
+          final isTablet = Responsive.isTablet(context);
           return Padding(
             padding: EdgeInsets.symmetric(
               horizontal: isMobile ? 24 : 80,
@@ -71,7 +73,7 @@ class _DesktopFooter extends StatelessWidget {
                       ),
                       const SizedBox(width: 12),
                       const Text(
-                        'UKR Solutions',
+                        SiteData.companyName,
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
@@ -82,7 +84,7 @@ class _DesktopFooter extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
                   const Text(
-                    'Flutter Developer • App Publisher',
+                    SiteData.role,
                     style: TextStyle(
                       fontSize: 14,
                       color: Color(0xFF94A3B8),
@@ -100,7 +102,7 @@ class _DesktopFooter extends StatelessWidget {
                       SizedBox(width: 8),
                       Flexible(
                         child: Text(
-                          'apps.uksolutions@gmail.com',
+                          SiteData.email,
                           style: TextStyle(
                             fontSize: 14,
                             color: Color(0xFF94A3B8),
@@ -116,7 +118,7 @@ class _DesktopFooter extends StatelessWidget {
                       Icon(Icons.language, size: 16, color: Color(0xFF94A3B8)),
                       SizedBox(width: 8),
                       Text(
-                        'ukrsolutions.in',
+                        SiteData.website,
                         style: TextStyle(
                           fontSize: 14,
                           color: Color(0xFF94A3B8),
@@ -181,7 +183,7 @@ class _DesktopFooter extends StatelessWidget {
         Container(height: 1, color: Colors.white.withOpacity(0.1)),
         const SizedBox(height: 24),
         Text(
-          '© ${DateTime.now().year} UKR Solutions. All rights reserved.',
+          '© ${DateTime.now().year} ${SiteData.companyName}. All rights reserved.',
           style: const TextStyle(fontSize: 14, color: Color(0xFF64748B)),
         ),
       ],
@@ -218,9 +220,9 @@ class _MobileFooter extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 12),
-            const Text(
-              'UKR Solutions',
-              style: TextStyle(
+            Text(
+              SiteData.companyName,
+              style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
@@ -229,9 +231,13 @@ class _MobileFooter extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 16),
-        const Text(
-          'Flutter Developer\nMobile • Web • IoT',
-          style: TextStyle(fontSize: 14, color: Color(0xFF94A3B8), height: 1.6),
+        Text(
+          SiteData.role,
+          style: const TextStyle(
+            fontSize: 14,
+            color: Color(0xFF94A3B8),
+            height: 1.6,
+          ),
         ),
         const SizedBox(height: 24),
 
@@ -241,7 +247,7 @@ class _MobileFooter extends StatelessWidget {
             Icon(Icons.email_outlined, size: 16, color: Color(0xFF94A3B8)),
             SizedBox(width: 8),
             Text(
-              'apps.uksolutions@gmail.com',
+              SiteData.email,
               style: TextStyle(fontSize: 12, color: Color(0xFF94A3B8)),
             ),
           ],
@@ -252,7 +258,7 @@ class _MobileFooter extends StatelessWidget {
             Icon(Icons.language, size: 16, color: Color(0xFF94A3B8)),
             SizedBox(width: 8),
             Text(
-              'ukrsolutions.in',
+              SiteData.website,
               style: TextStyle(fontSize: 12, color: Color(0xFF94A3B8)),
             ),
           ],
@@ -263,7 +269,7 @@ class _MobileFooter extends StatelessWidget {
         const SizedBox(height: 24),
 
         Text(
-          '© ${DateTime.now().year} UKR Solutions. All rights reserved.',
+          '© ${DateTime.now().year} ${SiteData.companyName}. All rights reserved.',
           textAlign: TextAlign.center,
           style: const TextStyle(fontSize: 12, color: Color(0xFF64748B)),
         ),
