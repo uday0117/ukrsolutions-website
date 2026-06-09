@@ -20,51 +20,59 @@ class AppInfo {
 
 class AppData {
   static const List<AppInfo> apps = [
+    // Finance Apps - Gold Theme
     AppInfo(
-      name: 'DocFlow',
-      description: 'PDF Tools & Editor',
-      icon: Icons.picture_as_pdf,
-      playStoreUrl: '',
-      primaryColor: Color(0xFF3B82F6),
-      secondaryColor: Color(0xFF2563EB),
-    ),
-
-    AppInfo(
-      name: 'DocSnap',
-      description: 'Document Scanner',
-      icon: Icons.document_scanner,
-      playStoreUrl: '',
-      primaryColor: Color(0xFF10B981),
-      secondaryColor: Color(0xFF059669),
-    ),
-
-    AppInfo(
-      name: 'BuildCalc',
-      description: 'Construction Calculator',
-      icon: Icons.calculate,
-      playStoreUrl: '',
+      name: 'TrackGoldPro',
+      description: 'TrackGold Pro - Your Premium Gold Price Tracking Companion',
+      icon: Icons.attach_money,
+      playStoreUrl:
+          'https://play.google.com/store/apps/details?id=com.uksolutions.trackgoldpro',
       primaryColor: Color(0xFFF59E0B),
       secondaryColor: Color(0xFFD97706),
     ),
 
     AppInfo(
-      name: 'FemGlow',
-      description: 'Women Health Tracker',
-      icon: Icons.favorite,
-      playStoreUrl: '',
-      primaryColor: Color(0xFFEC4899),
-      secondaryColor: Color(0xFFDB2777),
+      name: 'LoanBee EMI Calculator',
+      description: 'EMI Calculator App',
+      icon: Icons.account_balance,
+      playStoreUrl:
+          'https://play.google.com/store/apps/details?id=com.uksolutions.loanbee',
+      primaryColor: Color(0xFFF59E0B),
+      secondaryColor: Color(0xFFD97706),
+    ),
+
+    // Productivity Apps - Blue Theme
+    AppInfo(
+      name: 'NexCalc',
+      description: 'NexCalc - A Modern Calculator App',
+      icon: Icons.calculate_outlined,
+      playStoreUrl:
+          'https://play.google.com/store/apps/details?id=com.uksolutions.nexcalc',
+      primaryColor: Color(0xFF3B82F6),
+      secondaryColor: Color(0xFF2563EB),
+    ),
+
+    AppInfo(
+      name: 'BuildCalc',
+      description: 'Construction Calculator',
+      icon: Icons.construction,
+      playStoreUrl:
+          'https://play.google.com/store/apps/details?id=com.uksolutions.buildcalc',
+      primaryColor: Color(0xFF3B82F6),
+      secondaryColor: Color(0xFF2563EB),
     ),
 
     AppInfo(
       name: 'Memo Keeper',
       description: 'Notes & Reminders',
       icon: Icons.note_alt,
-      playStoreUrl: '',
-      primaryColor: Color(0xFF8B5CF6),
-      secondaryColor: Color(0xFF7C3AED),
+      playStoreUrl:
+          'https://play.google.com/store/apps/details?id=com.uksolutions.memokeeper',
+      primaryColor: Color(0xFF3B82F6),
+      secondaryColor: Color(0xFF2563EB),
     ),
 
+    // Learning App - Cyan Theme
     AppInfo(
       name: 'Learn Flutter & Dart',
       description: 'Flutter Learning App',
@@ -72,6 +80,17 @@ class AppData {
       playStoreUrl: '',
       primaryColor: Color(0xFF06B6D4),
       secondaryColor: Color(0xFF0891B2),
+    ),
+
+    // Health App - Pink Theme
+    AppInfo(
+      name: 'FemGlow',
+      description: 'FemGlow — Period & Cycle Tracker',
+      icon: Icons.favorite,
+      playStoreUrl:
+          'https://play.google.com/store/apps/details?id=com.uksolutions.femglow',
+      primaryColor: Color(0xFFEC4899),
+      secondaryColor: Color(0xFFDB2777),
     ),
   ];
 }

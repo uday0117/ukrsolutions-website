@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ukr_solutions_website/widgets/featured_apps_section.dart';
 import 'package:ukr_solutions_website/widgets/stats_section.dart';
 
 import '../widgets/about_section.dart';
@@ -18,6 +19,7 @@ class HomePage extends StatelessWidget {
             const nav.NavigationBar(),
             const HeroSection(),
             const StatsSection(),
+            const FeaturedAppsSection(),
 
             const AboutSection(),
             const FooterWidget(),
