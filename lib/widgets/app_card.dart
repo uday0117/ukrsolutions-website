@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:ukr_solutions_website/core/url_utils.dart';
+import 'package:ukr_solutions_website/theme/app_theme.dart';
 
 class AppCardWidget extends StatefulWidget {
   final String appName;
   final String description;
+  final String? longDescription;
+  final List<String>? features;
   final IconData icon;
   final String? playStoreUrl;
   final Color primaryColor;
@@ -13,6 +17,8 @@ class AppCardWidget extends StatefulWidget {
     super.key,
     required this.appName,
     required this.description,
+    this.longDescription,
+    this.features,
     required this.icon,
     this.playStoreUrl,
     required this.primaryColor,
@@ -24,158 +30,253 @@ class AppCardWidget extends StatefulWidget {
 }
 
 class _AppCardWidgetState extends State<AppCardWidget> {
-  bool isHovered = false;
+  bool _hovered = false;
 
-  Future<void> _launchUrl(String url) async {
-    final uri = Uri.parse(url);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri, mode: LaunchMode.externalApplication);
-    }
+  bool get _hasStore => hasPlayStoreUrl(widget.playStoreUrl);
+
+  Future<void> _openStore() async {
+    if (!_hasStore) return;
+    await openExternalUrl(widget.playStoreUrl!);
   }
 
   @override
   Widget build(BuildContext context) {
+    final bodyText = widget.longDescription ?? widget.description;
+
     return MouseRegion(
-      onEnter: (_) => setState(() => isHovered = true),
-      onExit: (_) => setState(() => isHovered = false),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeOut,
-        decoration: BoxDecoration(
-          color: const Color(0xFF1E293B),
-          borderRadius: BorderRadius.circular(24),
-          border: Border.all(
-            color: isHovered
-                ? widget.primaryColor.withOpacity(0.5)
-                : Colors.white.withOpacity(0.1),
-            width: 1,
+      onEnter: (_) => setState(() => _hovered = true),
+      onExit: (_) => setState(() => _hovered = false),
+      child: GestureDetector(
+        onTap: _hasStore ? _openStore : null,
+        child: AnimatedContainer(
+          duration: 350.ms,
+          curve: Curves.easeOutCubic,
+          transform: _hovered
+              ? Matrix4.translationValues(0, -10, 0)
+              : Matrix4.identity(),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(24),
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Colors.white.withValues(alpha: 0.07),
+                Colors.white.withValues(alpha: 0.02),
+              ],
+            ),
+            border: Border.all(
+              color: _hovered
+                  ? widget.primaryColor.withValues(alpha: 0.45)
+                  : Colors.white.withValues(alpha: 0.1),
+            ),
+            boxShadow: [
+              if (_hovered)
+                BoxShadow(
+                  color: widget.primaryColor.withValues(alpha: 0.15),
+                  blurRadius: 32,
+                  spreadRadius: -4,
+                ),
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.3),
+                blurRadius: 20,
+                offset: const Offset(0, 8),
+              ),
+            ],
           ),
-          boxShadow: isHovered
-              ? [
-                  BoxShadow(
-                    color: widget.primaryColor.withOpacity(0.2),
-                    blurRadius: 20,
-                    spreadRadius: 5,
-                  ),
-                ]
-              : [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-        ),
-        transform: isHovered
-            ? Matrix4.translationValues(0, -8, 0)
-            : Matrix4.identity(),
-        child: Padding(
-          padding: const EdgeInsets.all(32),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // App Icon
-              Container(
-                width: 80,
-                height: 80,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [widget.primaryColor, widget.secondaryColor],
-                  ),
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                      color: widget.primaryColor.withOpacity(0.4),
-                      blurRadius: 16,
-                      spreadRadius: 2,
-                    ),
-                  ],
-                ),
-                child: Icon(widget.icon, size: 40, color: Colors.white),
-              ),
-              const SizedBox(height: 24),
-
-              // App Name
-              Text(
-                widget.appName,
-                style: const TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-              const SizedBox(height: 12),
-
-              // Description
-              Text(
-                widget.description,
-                style: const TextStyle(
-                  fontSize: 16,
-                  color: Color(0xFF94A3B8),
-                  height: 1.6,
-                ),
-              ),
-              const SizedBox(height: 24),
-
-              // Play Store Button
-              if (widget.playStoreUrl != null)
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () => _launchUrl(widget.playStoreUrl!),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: widget.primaryColor,
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 24,
-                        vertical: 16,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(24),
+            child: Stack(
+              children: [
+                // Gradient accent strip
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  height: 3,
+                  child: AnimatedContainer(
+                    duration: 350.ms,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [widget.primaryColor, widget.secondaryColor],
                       ),
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.shop, size: 20),
-                        const SizedBox(width: 8),
-                        const Text('View on Play Store'),
-                      ],
-                    ),
                   ),
-                )
-              else
-                Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 24,
-                    vertical: 16,
-                  ),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF334155),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(28, 32, 28, 28),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Icon(Icons.schedule, size: 20, color: Color(0xFF94A3B8)),
-                      SizedBox(width: 8),
+                      Row(
+                        children: [
+                          Container(
+                            width: 64,
+                            height: 64,
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                                colors: [
+                                  widget.primaryColor,
+                                  widget.secondaryColor,
+                                ],
+                              ),
+                              borderRadius: BorderRadius.circular(18),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: widget.primaryColor.withValues(
+                                    alpha: 0.35,
+                                  ),
+                                  blurRadius: 20,
+                                  offset: const Offset(0, 6),
+                                ),
+                              ],
+                            ),
+                            child: Icon(
+                              widget.icon,
+                              size: 32,
+                              color: Colors.white,
+                            ),
+                          ),
+                          const Spacer(),
+                          if (_hasStore)
+                            Icon(
+                              Icons.open_in_new_rounded,
+                              size: 18,
+                              color: _hovered
+                                  ? widget.primaryColor
+                                  : AppTheme.textMuted,
+                            ),
+                        ],
+                      ),
+                      const SizedBox(height: 22),
                       Text(
-                        'Coming Soon',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: Color(0xFF94A3B8),
+                        widget.appName,
+                        style: const TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white,
+                          letterSpacing: -0.3,
                         ),
                       ),
+                      const SizedBox(height: 10),
+                      Text(
+                        bodyText,
+                        maxLines: 4,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontSize: 15,
+                          color: AppTheme.textMuted,
+                          height: 1.6,
+                        ),
+                      ),
+                      if (widget.features != null &&
+                          widget.features!.isNotEmpty) ...[
+                        const SizedBox(height: 16),
+                        ...widget.features!.take(3).map(
+                          (f) => Padding(
+                            padding: const EdgeInsets.only(bottom: 6),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.check_rounded,
+                                  size: 16,
+                                  color: widget.primaryColor,
+                                ),
+                                const SizedBox(width: 8),
+                                Expanded(
+                                  child: Text(
+                                    f,
+                                    style: const TextStyle(
+                                      fontSize: 13,
+                                      color: Color(0xFFCBD5E1),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                      const SizedBox(height: 22),
+                      if (_hasStore)
+                        _StoreButton(
+                          color: widget.primaryColor,
+                          hovered: _hovered,
+                          onPressed: _openStore,
+                        )
+                      else
+                        const _ComingSoonBadge(),
                     ],
                   ),
                 ),
-            ],
+              ],
+            ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _StoreButton extends StatelessWidget {
+  final Color color;
+  final bool hovered;
+  final VoidCallback onPressed;
+
+  const _StoreButton({
+    required this.color,
+    required this.hovered,
+    required this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton.icon(
+        onPressed: onPressed,
+        icon: const Icon(Icons.shop_rounded, size: 18),
+        label: const Text('Get on Play Store'),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: hovered ? color : color.withValues(alpha: 0.85),
+          foregroundColor: Colors.white,
+          padding: const EdgeInsets.symmetric(vertical: 14),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _ComingSoonBadge extends StatelessWidget {
+  const _ComingSoonBadge();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(vertical: 14),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.05),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
+      ),
+      child: const Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.schedule_rounded, size: 18, color: AppTheme.textMuted),
+          SizedBox(width: 8),
+          Text(
+            'Coming Soon',
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              color: AppTheme.textMuted,
+            ),
+          ),
+        ],
       ),
     );
   }

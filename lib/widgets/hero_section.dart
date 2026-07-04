@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ukr_solutions_website/core/responsive.dart';
 import 'package:ukr_solutions_website/core/routes.dart';
+import 'package:ukr_solutions_website/theme/app_theme.dart';
 
 class HeroSection extends StatefulWidget {
   const HeroSection({super.key});
@@ -12,287 +14,201 @@ class HeroSection extends StatefulWidget {
 
 class _HeroSectionState extends State<HeroSection>
     with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _fadeAnimation;
-  late Animation<Offset> _slideAnimation;
+  late AnimationController _floatController;
 
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-      duration: const Duration(milliseconds: 1500),
+    _floatController = AnimationController(
       vsync: this,
-    );
-
-    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: const Interval(0.0, 0.6, curve: Curves.easeOut),
-      ),
-    );
-
-    _slideAnimation = Tween<Offset>(
-      begin: const Offset(0, 0.3),
-      end: Offset.zero,
-    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
-
-    _controller.forward();
+      duration: const Duration(seconds: 4),
+    )..repeat(reverse: true);
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _floatController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final isMobile = Responsive.isMobile(context);
-        final isTablet = Responsive.isTablet(context);
-        return Container(
-          width: double.infinity,
-          constraints: BoxConstraints(minHeight: isMobile ? 500 : 560),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                const Color(0xFF6366F1).withOpacity(0.1),
-                const Color(0xFF8B5CF6).withOpacity(0.1),
-                const Color(0xFF06B6D4).withOpacity(0.1),
-              ],
+    final isMobile = Responsive.isMobile(context);
+    final isTablet = Responsive.isTablet(context);
+
+    return Container(
+      width: double.infinity,
+      constraints: BoxConstraints(minHeight: isMobile ? 520 : 620),
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          Positioned(
+            top: 40,
+            left: MediaQuery.sizeOf(context).width * 0.15,
+            child: AnimatedBuilder(
+              animation: _floatController,
+              builder: (_, child) => Transform.translate(
+                offset: Offset(0, _floatController.value * 16 - 8),
+                child: child,
+              ),
+              child: _GlowDot(
+                size: 180,
+                color: AppTheme.accentIndigo.withValues(alpha: 0.25),
+              ),
             ),
           ),
-          child: Stack(
-            children: [
-              // Animated background elements
-              Positioned(
-                top: -100,
-                right: -100,
-                child: Container(
-                  width: 400,
-                  height: 400,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: RadialGradient(
-                      colors: [
-                        const Color(0xFF6366F1).withOpacity(0.2),
-                        Colors.transparent,
+          Positioned(
+            bottom: 60,
+            right: MediaQuery.sizeOf(context).width * 0.1,
+            child: AnimatedBuilder(
+              animation: _floatController,
+              builder: (_, child) => Transform.translate(
+                offset: Offset(0, 8 - _floatController.value * 16),
+                child: child,
+              ),
+              child: _GlowDot(
+                size: 140,
+                color: AppTheme.accentCyan.withValues(alpha: 0.2),
+              ),
+            ),
+          ),
+          Center(
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: isMobile ? 24 : (isTablet ? 60 : 80),
+                vertical: isMobile ? 72 : 96,
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    width: isMobile ? 88 : 104,
+                    height: isMobile ? 88 : 104,
+                    decoration: BoxDecoration(
+                      gradient: AppTheme.heroGradient,
+                      borderRadius: BorderRadius.circular(26),
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppTheme.accentBlue.withValues(alpha: 0.4),
+                          blurRadius: 48,
+                          spreadRadius: -4,
+                        ),
                       ],
                     ),
-                  ),
-                ),
-              ),
-              Positioned(
-                bottom: -150,
-                left: -150,
-                child: Container(
-                  width: 500,
-                  height: 500,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: RadialGradient(
-                      colors: [
-                        const Color(0xFF8B5CF6).withOpacity(0.2),
-                        Colors.transparent,
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-
-              // Content
-              Center(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: isMobile ? 24 : (isTablet ? 60 : 80),
-                    vertical: isMobile ? 60 : 80,
-                  ),
-                  child: FadeTransition(
-                    opacity: _fadeAnimation,
-                    child: SlideTransition(
-                      position: _slideAnimation,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          // Logo/Badge
-                          Container(
-                            width: isMobile ? 80 : 100,
-                            height: isMobile ? 80 : 100,
-                            decoration: BoxDecoration(
-                              gradient: const LinearGradient(
-                                colors: [Color(0xFF3B82F6), Color(0xFF10B981)],
-                              ),
-                              borderRadius: BorderRadius.circular(20),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: const Color(
-                                    0xFF3B82F6,
-                                  ).withOpacity(0.4),
-                                  blurRadius: 40,
-                                  spreadRadius: 0,
-                                ),
-                                BoxShadow(
-                                  color: const Color(
-                                    0xFF10B981,
-                                  ).withOpacity(0.2),
-                                  blurRadius: 60,
-                                  spreadRadius: 10,
-                                ),
-                              ],
-                            ),
-                            child: Center(
-                              child: Text(
-                                'U',
-                                style: TextStyle(
-                                  fontSize: isMobile ? 48 : 60,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: isMobile ? 32 : 48),
-
-                          // Title
-                          Text(
-                            'Hi, I\'m Uday Reddy',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: isMobile ? 34 : (isTablet ? 52 : 68),
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                              height: 1.2,
-                            ),
-                          ),
-
-                          SizedBox(height: isMobile ? 12 : 16),
-
-                          Text(
-                            'Flutter Developer & Mobile App Builder',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: isMobile ? 20 : 28,
-                              fontWeight: FontWeight.w600,
-                              color: const Color(0xFF3B82F6),
-                            ),
-                          ),
-                          SizedBox(height: isMobile ? 16 : 24),
-
-                          // Subtitle
-                          SizedBox(
-                            width: isMobile ? double.infinity : 800,
-                            child: Text(
-                              'Building high-performance Android, iOS, Web and IoT applications using Flutter, Firebase, REST APIs and modern cloud technologies.',
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                          SizedBox(height: isMobile ? 40 : 56),
-
-                          // CTA Buttons
-                          if (isMobile)
-                            Column(
-                              children: [
-                                SizedBox(
-                                  width: double.infinity,
-                                  child: ElevatedButton(
-                                    onPressed: () => context.go(Routes.apps),
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: const Color(0xFF3B82F6),
-                                      foregroundColor: Colors.white,
-                                      padding: const EdgeInsets.symmetric(
-                                        vertical: 20,
-                                      ),
-                                    ),
-                                    child: const Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text('View My Apps'),
-                                        SizedBox(width: 8),
-                                        Icon(Icons.arrow_forward, size: 20),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(height: 16),
-                                SizedBox(
-                                  width: double.infinity,
-                                  child: OutlinedButton(
-                                    onPressed: () => context.go(Routes.contact),
-                                    style: OutlinedButton.styleFrom(
-                                      foregroundColor: Colors.white,
-                                      padding: const EdgeInsets.symmetric(
-                                        vertical: 20,
-                                      ),
-                                    ),
-                                    child: const Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Icon(Icons.email_outlined, size: 20),
-                                        SizedBox(width: 8),
-                                        Text('Hire Me'),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            )
-                          else
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                ElevatedButton(
-                                  onPressed: () => context.go(Routes.apps),
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: const Color(0xFF3B82F6),
-                                    foregroundColor: Colors.white,
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 40,
-                                      vertical: 24,
-                                    ),
-                                  ),
-                                  child: const Row(
-                                    children: [
-                                      Text('View My Apps'),
-                                      SizedBox(width: 8),
-                                      Icon(Icons.arrow_forward, size: 20),
-                                    ],
-                                  ),
-                                ),
-                                const SizedBox(width: 24),
-                                OutlinedButton(
-                                  onPressed: () => context.go(Routes.contact),
-                                  style: OutlinedButton.styleFrom(
-                                    foregroundColor: Colors.white,
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 40,
-                                      vertical: 24,
-                                    ),
-                                  ),
-                                  child: const Row(
-                                    children: [
-                                      Icon(Icons.email_outlined, size: 20),
-                                      SizedBox(width: 8),
-                                      Text('Hire Me'),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                        ],
+                    child: Center(
+                      child: Text(
+                        'U',
+                        style: TextStyle(
+                          fontSize: isMobile ? 48 : 56,
+                          fontWeight: FontWeight.w800,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
-                  ),
-                ),
+                  )
+                      .animate()
+                      .fadeIn(duration: 700.ms)
+                      .scale(
+                        begin: const Offset(0.8, 0.8),
+                        curve: Curves.easeOutBack,
+                      ),
+                  SizedBox(height: isMobile ? 36 : 48),
+                  ShaderMask(
+                    shaderCallback: (b) => AppTheme.heroGradient.createShader(b),
+                    child: Text(
+                      'Hi, I\'m Uday Reddy',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: isMobile ? 36 : (isTablet ? 52 : 64),
+                        fontWeight: FontWeight.w800,
+                        color: Colors.white,
+                        height: 1.1,
+                        letterSpacing: -1,
+                      ),
+                    ),
+                  ).animate().fadeIn(delay: 150.ms).slideY(begin: 0.2, end: 0),
+                  SizedBox(height: isMobile ? 14 : 18),
+                  Text(
+                    'Flutter Developer & App Publisher',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: isMobile ? 18 : 24,
+                      fontWeight: FontWeight.w600,
+                      color: AppTheme.accentCyan,
+                      letterSpacing: 0.2,
+                    ),
+                  ).animate().fadeIn(delay: 280.ms).slideY(begin: 0.15, end: 0),
+                  SizedBox(height: isMobile ? 20 : 28),
+                  ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 640),
+                    child: Text(
+                      'I build beautiful, high-performance Android & iOS apps with Flutter — from finance tools to health trackers, published on Google Play.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: isMobile ? 16 : 18,
+                        color: AppTheme.textMuted,
+                        height: 1.7,
+                      ),
+                    ),
+                  ).animate().fadeIn(delay: 400.ms),
+                  SizedBox(height: isMobile ? 36 : 48),
+                  Wrap(
+                    spacing: 16,
+                    runSpacing: 14,
+                    alignment: WrapAlignment.center,
+                    children: [
+                      ElevatedButton.icon(
+                        onPressed: () => context.go(Routes.apps),
+                        icon: const Icon(Icons.apps_rounded, size: 20),
+                        label: const Text('Explore Apps'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppTheme.accentBlue,
+                          foregroundColor: Colors.white,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: isMobile ? 24 : 32,
+                            vertical: 18,
+                          ),
+                        ),
+                      ),
+                      OutlinedButton.icon(
+                        onPressed: () => context.go(Routes.contact),
+                        icon: const Icon(Icons.mail_outline_rounded, size: 20),
+                        label: const Text('Hire Me'),
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: isMobile ? 24 : 32,
+                            vertical: 18,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ).animate().fadeIn(delay: 550.ms).slideY(begin: 0.1, end: 0),
+                ],
               ),
-            ],
+            ),
           ),
-        );
-      },
+        ],
+      ),
+    );
+  }
+}
+
+class _GlowDot extends StatelessWidget {
+  final double size;
+  final Color color;
+
+  const _GlowDot({required this.size, required this.color});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        gradient: RadialGradient(colors: [color, Colors.transparent]),
+      ),
     );
   }
 }

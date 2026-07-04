@@ -1,32 +1,37 @@
 import 'package:flutter/material.dart';
+import 'dart:ui';
 import 'package:go_router/go_router.dart';
 import 'package:ukr_solutions_website/core/responsive.dart';
 import 'package:ukr_solutions_website/core/routes.dart';
 import 'package:ukr_solutions_website/data/site_data.dart';
+import 'package:ukr_solutions_website/theme/app_theme.dart';
 
 class NavigationBar extends StatelessWidget {
   const NavigationBar({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final currentPath = GoRouterState.of(context).uri.toString();
+    final currentPath = GoRouterState.of(context).uri.path;
 
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-      decoration: BoxDecoration(
-        color: const Color(0xFF0F172A).withOpacity(0.95),
-        border: Border(
-          bottom: BorderSide(color: Colors.white.withOpacity(0.1), width: 1),
-        ),
-      ),
+    return ClipRect(
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+          decoration: BoxDecoration(
+            color: AppTheme.surface.withValues(alpha: 0.75),
+            border: Border(
+              bottom: BorderSide(
+                color: Colors.white.withValues(alpha: 0.08),
+              ),
+            ),
+          ),
       child: LayoutBuilder(
         builder: (context, constraints) {
-          final isMobile = Responsive.isMobile(context);
-          final isTablet = Responsive.isTablet(context);
+          final isDesktop = Responsive.isDesktop(context);
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              // Logo
               InkWell(
                 onTap: () => context.go(Routes.home),
                 child: Row(
@@ -58,7 +63,7 @@ class NavigationBar extends StatelessWidget {
                         ),
                       ),
                     ),
-                    if (!isMobile) ...[
+                    if (isDesktop) ...[
                       const SizedBox(width: 12),
                       const Text(
                         SiteData.companyName,
@@ -72,15 +77,15 @@ class NavigationBar extends StatelessWidget {
                   ],
                 ),
               ),
-
-              // Navigation items
-              if (isMobile)
-                _MobileMenu(currentPath: currentPath)
+              if (isDesktop)
+                _DesktopMenu(currentPath: currentPath)
               else
-                _DesktopMenu(currentPath: currentPath),
+                _MobileMenu(currentPath: currentPath),
             ],
           );
         },
+      ),
+        ),
       ),
     );
   }
@@ -95,17 +100,15 @@ class _DesktopMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        _NavItem(title: 'Home', path: '/', currentPath: currentPath),
-        const SizedBox(width: 32),
-        _NavItem(title: 'Apps', path: '/apps', currentPath: currentPath),
-        const SizedBox(width: 32),
-        _NavItem(
-          title: 'Privacy Policy',
-          path: '/privacy',
-          currentPath: currentPath,
-        ),
-        const SizedBox(width: 32),
-        _NavItem(title: 'Contact', path: '/contact', currentPath: currentPath),
+        _NavItem(title: 'Home', path: Routes.home, currentPath: currentPath),
+        const SizedBox(width: 28),
+        _NavItem(title: 'Apps', path: Routes.apps, currentPath: currentPath),
+        const SizedBox(width: 28),
+        _NavItem(title: 'About', path: Routes.about, currentPath: currentPath),
+        const SizedBox(width: 28),
+        _NavItem(title: 'Blog', path: Routes.blog, currentPath: currentPath),
+        const SizedBox(width: 28),
+        _NavItem(title: 'Contact', path: Routes.contact, currentPath: currentPath),
       ],
     );
   }
@@ -126,14 +129,11 @@ class _MobileMenuState extends State<_MobileMenu> {
   @override
   Widget build(BuildContext context) {
     return Stack(
+      clipBehavior: Clip.none,
       children: [
         IconButton(
           icon: Icon(isOpen ? Icons.close : Icons.menu),
-          onPressed: () {
-            setState(() {
-              isOpen = !isOpen;
-            });
-          },
+          onPressed: () => setState(() => isOpen = !isOpen),
         ),
         if (isOpen)
           Positioned(
@@ -150,25 +150,31 @@ class _MobileMenuState extends State<_MobileMenu> {
                 children: [
                   _NavItem(
                     title: 'Home',
-                    path: '/',
+                    path: Routes.home,
                     currentPath: widget.currentPath,
                     onTap: () => setState(() => isOpen = false),
                   ),
                   _NavItem(
                     title: 'Apps',
-                    path: '/apps',
+                    path: Routes.apps,
                     currentPath: widget.currentPath,
                     onTap: () => setState(() => isOpen = false),
                   ),
                   _NavItem(
-                    title: 'Privacy Policy',
-                    path: '/privacy',
+                    title: 'About',
+                    path: Routes.about,
+                    currentPath: widget.currentPath,
+                    onTap: () => setState(() => isOpen = false),
+                  ),
+                  _NavItem(
+                    title: 'Blog',
+                    path: Routes.blog,
                     currentPath: widget.currentPath,
                     onTap: () => setState(() => isOpen = false),
                   ),
                   _NavItem(
                     title: 'Contact',
-                    path: '/contact',
+                    path: Routes.contact,
                     currentPath: widget.currentPath,
                     onTap: () => setState(() => isOpen = false),
                   ),
@@ -201,10 +207,15 @@ class _NavItem extends StatefulWidget {
 class _NavItemState extends State<_NavItem> {
   bool isHovered = false;
 
+  bool get isActive {
+    if (widget.path == Routes.home) {
+      return widget.currentPath == Routes.home;
+    }
+    return widget.currentPath.startsWith(widget.path);
+  }
+
   @override
   Widget build(BuildContext context) {
-    final isActive = widget.currentPath == widget.path;
-
     return MouseRegion(
       onEnter: (_) => setState(() => isHovered = true),
       onExit: (_) => setState(() => isHovered = false),

@@ -8,7 +8,8 @@ void main() {
   testWidgets('App smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
     await tester.pumpWidget(const UKRSolutionsApp());
-    await tester.pumpAndSettle();
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 800));
 
     // Verify that the app loads with the company name
     expect(find.text('UKR Solutions'), findsWidgets);

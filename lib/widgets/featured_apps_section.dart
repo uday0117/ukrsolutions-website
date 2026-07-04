@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
-
-import '../core/responsive.dart';
-import '../data/app_data.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:go_router/go_router.dart';
+import 'package:ukr_solutions_website/core/responsive.dart';
+import 'package:ukr_solutions_website/core/routes.dart';
+import 'package:ukr_solutions_website/data/app_data.dart';
+import 'package:ukr_solutions_website/theme/app_theme.dart';
+import 'package:ukr_solutions_website/widgets/animated_reveal.dart';
+import 'package:ukr_solutions_website/widgets/app_card.dart';
+import 'package:ukr_solutions_website/widgets/section_header.dart';
 
 class FeaturedAppsSection extends StatelessWidget {
   const FeaturedAppsSection({super.key});
@@ -11,6 +16,10 @@ class FeaturedAppsSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final isMobile = Responsive.isMobile(context);
     final isTablet = Responsive.isTablet(context);
+    final featured = AppData.apps
+        .where((a) => a.playStoreUrl != null && a.playStoreUrl!.isNotEmpty)
+        .take(3)
+        .toList();
 
     return Container(
       width: double.infinity,
@@ -18,102 +27,52 @@ class FeaturedAppsSection extends StatelessWidget {
         horizontal: isMobile ? 24 : (isTablet ? 60 : 80),
         vertical: isMobile ? 60 : 100,
       ),
-      child: Column(
-        children: [
-          Text(
-            'Featured Applications',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: isMobile ? 32 : (isTablet ? 40 : 48),
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
+      child: AnimatedReveal(
+        child: Column(
+          children: [
+            const SectionHeader(
+              badge: 'PLAY STORE',
+              title: 'Featured Apps',
+              subtitle:
+                  'Tap any card to open on Google Play — finance, productivity, and health tools built with Flutter.',
             ),
-          ),
-
-          const SizedBox(height: 16),
-
-          Text(
-            'Apps published by UKR Solutions',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: isMobile ? 14 : 18,
-              color: const Color(0xFF94A3B8),
+            SizedBox(height: isMobile ? 40 : 56),
+            Wrap(
+              spacing: 24,
+              runSpacing: 24,
+              alignment: WrapAlignment.center,
+              children: [
+                for (var i = 0; i < featured.length; i++)
+                  SizedBox(
+                    width: isMobile ? double.infinity : 340,
+                    child: AppCardWidget(
+                      appName: featured[i].name,
+                      description: featured[i].description,
+                      longDescription: featured[i].longDescription,
+                      features: featured[i].features,
+                      icon: featured[i].icon,
+                      playStoreUrl: featured[i].playStoreUrl,
+                      primaryColor: featured[i].primaryColor,
+                      secondaryColor: featured[i].secondaryColor,
+                    ).staggerIn(index: i),
+                  ),
+              ],
             ),
-          ),
-
-          SizedBox(height: isMobile ? 40 : 60),
-
-          Wrap(
-            spacing: 24,
-            runSpacing: 24,
-            alignment: WrapAlignment.center,
-            children: AppData.apps.take(3).map((app) {
-              return Container(
-                width: isMobile ? double.infinity : 320,
-                padding: const EdgeInsets.all(24),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF1E293B),
-                  borderRadius: BorderRadius.circular(24),
-                  border: Border.all(color: Colors.white.withOpacity(0.1)),
+            const SizedBox(height: 40),
+            TextButton.icon(
+              onPressed: () => context.go(Routes.apps),
+              icon: const Icon(Icons.grid_view_rounded, size: 18),
+              label: const Text('View All Apps'),
+              style: TextButton.styleFrom(
+                foregroundColor: AppTheme.accentBlue,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 14,
                 ),
-                child: Column(
-                  children: [
-                    Icon(app.icon, size: 56, color: app.primaryColor),
-
-                    const SizedBox(height: 20),
-
-                    Text(
-                      app.name,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-
-                    const SizedBox(height: 12),
-
-                    Text(
-                      app.description,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        color: Color(0xFF94A3B8),
-                        height: 1.5,
-                      ),
-                    ),
-
-                    const SizedBox(height: 20),
-
-                    ElevatedButton(
-                      onPressed:
-                          app.playStoreUrl == null || app.playStoreUrl!.isEmpty
-                          ? null
-                          : () async {
-                              final uri = Uri.parse(app.playStoreUrl!);
-
-                              await launchUrl(
-                                uri,
-                                mode: LaunchMode.externalApplication,
-                              );
-                            },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: app.primaryColor,
-                        foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 20,
-                          vertical: 14,
-                        ),
-                      ),
-                      child: const Text('View App'),
-                    ),
-                  ],
-                ),
-              );
-            }).toList(),
-          ),
-        ],
+              ),
+            ).animate().fadeIn(delay: 400.ms),
+          ],
+        ),
       ),
     );
   }

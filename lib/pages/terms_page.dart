@@ -49,7 +49,7 @@ class TermsPage extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               Text(
-                'Last updated: ${DateTime.now().toString().split(' ')[0]}',
+                'Last updated: March 15, 2026',
                 style: const TextStyle(fontSize: 14, color: Color(0xFF94A3B8)),
               ),
               const SizedBox(height: 40),

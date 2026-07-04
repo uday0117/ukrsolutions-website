@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ukr_solutions_website/core/responsive.dart';
+import 'package:ukr_solutions_website/theme/app_theme.dart';
+import 'package:ukr_solutions_website/widgets/animated_reveal.dart';
+import 'package:ukr_solutions_website/widgets/section_header.dart';
 
 class AboutSection extends StatelessWidget {
   const AboutSection({super.key});
@@ -18,26 +21,15 @@ class AboutSection extends StatelessWidget {
           ),
           child: Column(
             children: [
-              // Section Header
-              Text(
-                'My Expertise',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: isMobile ? 32 : (isTablet ? 40 : 48),
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
+              const AnimatedReveal(
+                child: SectionHeader(
+                  badge: 'SERVICES',
+                  title: 'My Expertise',
+                  subtitle:
+                      'Technologies and solutions I work with every day',
                 ),
               ),
-              SizedBox(height: isMobile ? 12 : 16),
-              Text(
-                'Technologies and solutions I work with every day',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: isMobile ? 14 : 18,
-                  color: const Color(0xFF94A3B8),
-                ),
-              ),
-              SizedBox(height: isMobile ? 40 : 60),
+              SizedBox(height: isMobile ? 40 : 56),
 
               // Services Grid
               if (isMobile)
@@ -150,29 +142,29 @@ class _ServiceCardState extends State<_ServiceCard> {
         width: 280,
         padding: const EdgeInsets.all(32),
         decoration: BoxDecoration(
-          color: const Color(0xFF1E293B),
           borderRadius: BorderRadius.circular(20),
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Colors.white.withValues(alpha: isHovered ? 0.08 : 0.04),
+              Colors.white.withValues(alpha: 0.01),
+            ],
+          ),
           border: Border.all(
             color: isHovered
-                ? const Color(0xFF3B82F6).withOpacity(0.5)
-                : Colors.white.withOpacity(0.1),
-            width: 1,
+                ? AppTheme.accentBlue.withValues(alpha: 0.45)
+                : Colors.white.withValues(alpha: 0.1),
           ),
           boxShadow: isHovered
               ? [
                   BoxShadow(
-                    color: const Color(0xFF3B82F6).withOpacity(0.2),
-                    blurRadius: 20,
-                    spreadRadius: 5,
+                    color: AppTheme.accentBlue.withValues(alpha: 0.15),
+                    blurRadius: 24,
+                    spreadRadius: -4,
                   ),
                 ]
-              : [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
+              : null,
         ),
         transform: isHovered
             ? Matrix4.translationValues(0, -8, 0)

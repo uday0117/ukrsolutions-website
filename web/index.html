@@ -1,120 +1,236 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <base href="$FLUTTER_BASE_HREF">
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#020617">
+  <meta name="color-scheme" content="dark">
 
-    <!-- AdSense -->
-  <script async
-    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1451522103593938"
-    crossorigin="anonymous">
-  </script>
-
-
-
-  <!-- SEO -->
   <title>UKR Solutions | Flutter Developer & App Publisher</title>
 
-  <meta
-    name="description"
-    content="UKR Solutions portfolio showcasing Flutter apps, Android, iOS, Web and IoT projects built by Uday Reddy. Creator of DocFlow, DocSnap, BuildCalc, FemGlow, Memo Keeper and Learn Flutter & Dart."
-  >
+  <meta name="description" content="UKR Solutions portfolio showcasing Flutter apps, Android, iOS, Web and IoT projects built by Uday Reddy. Creator of TrackGoldPro, BuildCalc, FemGlow, Memo Keeper and more.">
+  <meta name="keywords" content="Flutter Developer, Flutter Apps, Android Developer, iOS Developer, UKR Solutions, Uday Reddy, TrackGoldPro, BuildCalc, FemGlow">
+  <meta name="author" content="Uday Reddy">
+  <link rel="canonical" href="https://ukrsolutions.in/">
 
-  <meta
-    name="keywords"
-    content="Flutter Developer, Flutter Apps, Android Developer, iOS Developer, Web Developer, IoT Developer, UKR Solutions, Uday Reddy, DocFlow, DocSnap, BuildCalc, FemGlow, Memo Keeper, Learn Flutter"
-  >
+  <meta property="og:title" content="UKR Solutions | Flutter Developer & App Publisher">
+  <meta property="og:description" content="Flutter Developer specializing in Android, iOS, Web and IoT applications.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ukrsolutions.in">
+  <meta property="og:site_name" content="UKR Solutions">
 
-  <meta
-    name="author"
-    content="Uday Reddy"
-  >
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="UKR Solutions | Flutter Developer & App Publisher">
+  <meta name="twitter:description" content="Flutter apps built by Uday Reddy.">
 
-  <!-- Open Graph -->
-  <meta
-    property="og:title"
-    content="UKR Solutions | Flutter Developer & App Publisher"
-  >
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="UKR Solutions">
 
-  <meta
-    property="og:description"
-    content="Flutter Developer specializing in Android, iOS, Web and IoT applications. Creator of DocFlow, DocSnap, BuildCalc, FemGlow, Memo Keeper and Learn Flutter."
-  >
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="manifest" href="manifest.json">
 
-  <meta
-    property="og:type"
-    content="website"
-  >
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "UKR Solutions",
+    "url": "https://ukrsolutions.in",
+    "logo": "https://ukrsolutions.in/icons/Icon-192.png",
+    "description": "Flutter development studio building Android, iOS, Web and IoT applications.",
+    "founder": { "@type": "Person", "name": "Uday Reddy", "jobTitle": "Flutter Developer" },
+    "contactPoint": { "@type": "ContactPoint", "email": "apps.uksolutions@gmail.com", "contactType": "customer support" }
+  }
+  </script>
 
-  <meta
-    property="og:url"
-    content="https://ukrsolutions.in"
-  >
+  <style>
+    html, body {
+      background: #020617;
+      margin: 0;
+      padding: 0;
+      color-scheme: dark;
+    }
 
-  <meta
-    property="og:site_name"
-    content="UKR Solutions"
-  >
+    /* SEO content: hidden visually, available to crawlers */
+    #seo-content {
+      position: absolute;
+      left: -10000px;
+      top: auto;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+      border: 0;
+    }
 
-  <!-- Twitter -->
+    /* Dark splash — matches Flutter theme, no white flash */
+    #app-loader {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(ellipse at 30% 20%, rgba(99,102,241,0.18) 0%, transparent 50%),
+                  radial-gradient(ellipse at 70% 80%, rgba(6,182,212,0.12) 0%, transparent 50%),
+                  #020617;
+      z-index: 9999;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
 
-<meta
-  name="twitter:card"
-  content="summary_large_image"
->
+    #app-loader.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
 
-<meta
-  name="twitter:title"
-  content="UKR Solutions | Flutter Developer & App Publisher"
->
+    .loader-logo {
+      width: 72px;
+      height: 72px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #3B82F6, #10B981);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      font-weight: 800;
+      color: white;
+      font-family: system-ui, sans-serif;
+      box-shadow: 0 0 40px rgba(59,130,246,0.35);
+      animation: pulse 2s ease-in-out infinite;
+    }
 
-<meta
-  name="twitter:description"
-  content="Flutter apps, Android, iOS, Web and IoT projects built by Uday Reddy."
->
+    .loader-text {
+      margin-top: 20px;
+      font-family: system-ui, sans-serif;
+      font-size: 14px;
+      color: #64748B;
+      letter-spacing: 0.5px;
+    }
 
-  <!-- iOS Meta -->
-  <meta
-    name="mobile-web-app-capable"
-    content="yes"
-  >
+    .loader-bar {
+      margin-top: 24px;
+      width: 120px;
+      height: 3px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 999px;
+      overflow: hidden;
+    }
 
-  <meta
-    name="apple-mobile-web-app-capable"
-    content="yes"
-  >
+    .loader-bar::after {
+      content: '';
+      display: block;
+      height: 100%;
+      width: 40%;
+      background: linear-gradient(90deg, #3B82F6, #06B6D4);
+      border-radius: 999px;
+      animation: slide 1.2s ease-in-out infinite;
+    }
 
-  <meta
-    name="apple-mobile-web-app-status-bar-style"
-    content="black"
-  >
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.04); }
+    }
 
-  <meta
-    name="apple-mobile-web-app-title"
-    content="UKR Solutions"
-  >
+    @keyframes slide {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(350%); }
+    }
 
-  <link
-    rel="apple-touch-icon"
-    href="icons/Icon-192.png"
-  >
+    /* Hide empty AdSense placeholders (white boxes before fill or when unfilled) */
+    ins.adsbygoogle[data-ad-status="unfilled"],
+    ins.adsbygoogle:not([data-ad-status="filled"]) {
+      display: none !important;
+    }
 
-  <!-- Favicon -->
-  <link
-    rel="icon"
-    type="image/png"
-    href="favicon.png"
-  >
-
-  <link
-    rel="manifest"
-    href="manifest.json"
-  >
+    iframe[id^="google_ads_iframe"],
+    iframe[src*="googlesyndication"] {
+      background: transparent !important;
+    }
+  </style>
 </head>
 
 <body>
+  <div id="app-loader" aria-hidden="true">
+    <div class="loader-logo">U</div>
+    <p class="loader-text">UKR Solutions</p>
+    <div class="loader-bar"></div>
+  </div>
+
+  <!-- SEO-only content for crawlers -->
+  <article id="seo-content">
+    <h1>UKR Solutions — Flutter Developer &amp; App Publisher</h1>
+    <p>Uday Reddy builds cross-platform Flutter apps for Android and iOS.</p>
+    <nav>
+      <a href="/">Home</a><a href="/apps">Apps</a><a href="/about">About</a>
+      <a href="/blog">Blog</a><a href="/contact">Contact</a>
+    </nav>
+    <p>Apps: TrackGoldPro, LoanBee, BuildCalc, FemGlow, Memo Keeper, NexCalc.</p>
+  </article>
+
+  <noscript>
+    <p style="color:#94A3B8;padding:2rem;font-family:system-ui,sans-serif;background:#020617;">
+      JavaScript is required. Email <a href="mailto:apps.uksolutions@gmail.com" style="color:#3B82F6">apps.uksolutions@gmail.com</a>
+    </p>
+  </noscript>
+
   <script src="flutter_bootstrap.js" async></script>
+
+  <script>
+    (function () {
+      // Keep false until AdSense review is approved — prevents white ad boxes
+      // and policy hits while the account is still flagged.
+      var ADS_ENABLED = false;
+      var AD_CLIENT = 'ca-pub-1451522103593938';
+
+      function currentPath() {
+        return window.location.pathname.replace(/\/$/, '') || '/';
+      }
+
+      function pathAllowed(p) {
+        if (p === '/' || p === '/apps' || p === '/about') return true;
+        if (p === '/blog' || p.indexOf('/blog/') === 0) return true;
+        return false;
+      }
+
+      function hideLoader() {
+        var loader = document.getElementById('app-loader');
+        if (loader) loader.classList.add('hidden');
+      }
+
+      function loadAdSense() {
+        if (!ADS_ENABLED) return;
+        if (!pathAllowed(currentPath())) return;
+        if (document.querySelector('script[src*="adsbygoogle.js"]')) return;
+        var s = document.createElement('script');
+        s.async = true;
+        s.crossOrigin = 'anonymous';
+        s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' + AD_CLIENT;
+        document.head.appendChild(s);
+      }
+
+      window.updateAdPolicy = function (path) {
+        var p = (path || window.location.pathname).replace(/\/$/, '') || '/';
+        var allowed = pathAllowed(p);
+        document.querySelectorAll('ins.adsbygoogle, iframe[id^="google_ads"], iframe[src*="googlesyndication"]').forEach(function (el) {
+          el.style.display = allowed ? '' : 'none';
+        });
+        if (allowed) loadAdSense();
+      };
+
+      window.addEventListener('flutter-first-frame', function () {
+        hideLoader();
+        setTimeout(loadAdSense, 1500);
+      });
+    })();
+  </script>
 </body>
 </html>

@@ -49,7 +49,7 @@ class PrivacyPage extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               Text(
-                'Last updated: ${DateTime.now().toString().split(' ')[0]}',
+                'Last updated: March 15, 2026',
                 style: const TextStyle(fontSize: 14, color: Color(0xFF94A3B8)),
               ),
               const SizedBox(height: 40),
@@ -87,6 +87,18 @@ class PrivacyPage extends StatelessWidget {
               _buildSection(
                 'Third-Party Services',
                 'Our apps may contain links to third-party websites or services. We are not responsible for the privacy practices of these third parties. We encourage you to review their privacy policies.',
+              ),
+
+              _buildSection(
+                'Advertising (Google AdSense)',
+                'This website uses Google AdSense to display advertisements. Google and its partners may use cookies '
+                    'and similar technologies to serve ads based on your prior visits to this website or other websites. '
+                    'You can opt out of personalized advertising by visiting Google\'s Ads Settings.\n\n'
+                    'Third-party vendors, including Google, use cookies to serve ads on this site. Google\'s use of '
+                    'advertising cookies enables it and its partners to serve ads based on your visit to this site and/or '
+                    'other sites on the Internet.\n\n'
+                    'Ads are only displayed on content pages (Home, Apps, About, Blog) and are not shown on utility pages '
+                    'such as Contact, Privacy Policy, or Terms & Conditions.',
               ),
 
               _buildSection(
