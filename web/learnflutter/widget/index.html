@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Learn Flutter — Opening widget…</title>
+  <meta name="description" content="Learn Flutter widgets with live previews, quizzes & interview prep.">
+  <meta property="og:title" content="Learn Flutter">
+  <meta property="og:description" content="Master every Flutter widget — free on Android">
+  <meta property="og:url" content="https://ukrsolutions.in/learnflutter/">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #013A6B 0%, #02569B 50%, #54C5F8 100%);
+      color: #fff;
+      padding: 24px;
+    }
+    .card {
+      max-width: 420px;
+      width: 100%;
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 24px;
+      padding: 40px 32px;
+      text-align: center;
+    }
+    .logo { font-size: 48px; margin-bottom: 16px; }
+    h1 { font-size: 1.6rem; font-weight: 800; margin-bottom: 8px; }
+    .widget-name { font-size: 1.25rem; color: #54C5F8; font-weight: 700; margin: 12px 0; }
+    p { opacity: 0.85; line-height: 1.5; margin-bottom: 24px; font-size: 0.95rem; }
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 14px 20px;
+      margin-bottom: 12px;
+      border: none;
+      border-radius: 14px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      text-align: center;
+    }
+    .btn-primary { background: #fff; color: #02569B; }
+    .btn-secondary { background: transparent; color: #fff; border: 2px solid rgba(255,255,255,0.4); }
+    .spinner {
+      width: 32px; height: 32px;
+      border: 3px solid rgba(255,255,255,0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 20px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="spinner" id="spinner"></div>
+    <div class="logo">📱</div>
+    <h1>Learn Flutter</h1>
+    <div class="widget-name" id="widgetLabel">Loading…</div>
+    <p id="status">Opening in the app…</p>
+    <a class="btn btn-primary" id="playStoreBtn" href="#">Get the app free</a>
+    <a class="btn btn-secondary" id="openAppBtn" href="#">Open in app</a>
+  </div>
+
+  <script>
+    const PLAY_STORE = 'https://play.google.com/store/apps/details?id=com.uksolutions.learnflutter';
+    const SCHEME = 'learnflutter';
+
+    // Parse widget ID from:
+    //   /learnflutter/widget/text
+    //   /learnflutter/widget/index.html?id=text  (fallback)
+    function getWidgetId() {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('id')) return params.get('id');
+
+      const parts = window.location.pathname.split('/').filter(Boolean);
+      const idx = parts.indexOf('widget');
+      if (idx >= 0 && parts[idx + 1] && parts[idx + 1] !== 'index.html') {
+        return decodeURIComponent(parts[idx + 1]);
+      }
+      return null;
+    }
+
+    function formatName(id) {
+      if (!id) return 'Flutter Widget';
+      return id.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+    }
+
+    const widgetId = getWidgetId();
+    const appLink = widgetId
+      ? `${SCHEME}://widget/${widgetId}`
+      : `${SCHEME}://widget/text`;
+    const httpsLink = widgetId
+      ? `https://ukrsolutions.in/learnflutter/widget/${widgetId}`
+      : 'https://ukrsolutions.in/learnflutter/';
+
+    document.getElementById('widgetLabel').textContent = formatName(widgetId);
+    document.getElementById('playStoreBtn').href = PLAY_STORE;
+    document.getElementById('openAppBtn').href = appLink;
+
+    // Try to open the app (Android intent fallback)
+    function tryOpenApp() {
+      const isAndroid = /Android/i.test(navigator.userAgent);
+      if (isAndroid && widgetId) {
+        // Intent URL works when App Links aren't verified yet
+        window.location.href =
+          `intent://widget/${widgetId}#Intent;scheme=${SCHEME};package=com.uksolutions.learnflutter;S.browser_fallback_url=${encodeURIComponent(PLAY_STORE)};end`;
+      } else {
+        window.location.href = appLink;
+      }
+    }
+
+    // Auto-attempt open, then show fallback
+    tryOpenApp();
+    setTimeout(() => {
+      document.getElementById('spinner').style.display = 'none';
+      document.getElementById('status').textContent =
+        widgetId
+          ? `View the "${formatName(widgetId)}" widget in Learn Flutter — 125+ widgets, quizzes & interview prep.`
+          : 'Master every Flutter widget with live previews, quizzes & interview prep.';
+    }, 1800);
+
+    // Update OG tags for social previews
+    if (widgetId) {
+      document.querySelector('meta[property="og:title"]').content =
+        `Learn Flutter — ${formatName(widgetId)} Widget`;
+      document.querySelector('meta[property="og:url"]').content = httpsLink;
+    }
+  </script>
+</body>
+</html>

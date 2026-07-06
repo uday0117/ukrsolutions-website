@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.uksolutions.learnflutter",
+      "sha256_cert_fingerprints": [
+        "9A:AA:68:E6:77:FE:52:AD:DE:9E:A2:BA:D5:19:F5:58:29:20:49:14:5D:9C:43:30:2F:C8:21:9D:8E:5F:65:DF"
+      ]
+    }
+  }
+]
